@@ -1,0 +1,8 @@
+{
+    "production": {
+        "serverURL": "http://minecraft.eyeball.online${PORT}"
+    },
+    "testing": {
+        "serverURL": "http://localhost${PORT}"
+    }
+}

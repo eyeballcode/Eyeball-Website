@@ -1,0 +1,19 @@
+{
+  "name": "teamfreehugs-website",
+  "version": "1.0.0",
+  "description": "Team Free Hugs Website",
+  "main": "main.js",
+  "scripts": {
+    "test": "jasmine",
+    "start": "node main",
+    "start-root": "sudo node main"
+  },
+  "author": "Eyeballcode",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.5.2"
+  },
+  "dependencies": {
+    "etag": "^1.7.0"
+  }
+}
