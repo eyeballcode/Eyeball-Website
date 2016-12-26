@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jasmine",
     "start": "node main",
-    "start-root": "sudo node main"
+    "start-root": "sudo node main",
+    "start-nohttps": "node main --no-https",
+    "start-root-nohttps": "sudo node main --no-https"
   },
   "author": "Eyeballcode",
   "license": "MIT",
