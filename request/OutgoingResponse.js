@@ -21,11 +21,11 @@ class OutgoingResponse {
 
     send(data) {
         if (this.hasEnded) throw new Error('Write after end');
-        if (typeof data === 'string')
-            this.buffer.write(data);
-        else if (Buffer.isBuffer(data)) {
-            this.buffer = Buffer.concat([this.buffer, Buffer.from(data)]);
-        }
+        if (Buffer.isBuffer(data))
+            this.buffer = Buffer.concat([this.buffer, data]);
+         else if (typeof data === 'string')
+            this.buffer = Buffer.concat([this.buffer, Buffer.from(data.toString())]);
+
     }
 
     writeHead(code, headers) {
