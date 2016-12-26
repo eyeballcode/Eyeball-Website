@@ -38,3 +38,6 @@ jspm_packages
 
 # Https certs
 https/
+
+# Config
+config.json

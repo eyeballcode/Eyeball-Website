@@ -1,6 +1,8 @@
 const etag = require('etag');
 const path = require('path');
 const fs = require('fs');
+const pug = require('pug');
+const util = require('../util/utils');
 
 class OutgoingResponse {
     constructor(req, res) {
@@ -65,15 +67,12 @@ class OutgoingResponse {
     }
 
     sendHTML(name, variables) {
-        var htmlPath = path.join(__dirname, '../html', name + '.html');
-        fs.readFile(htmlPath, (err, data) => {
-            if (err) throw new Error('Cannot find ' + name);
-            this.setHeader('Content-Type', 'text/html');
-            data = data.toString();
-            for (let key of Object.keys(variables || {}))
-                data = data.replace(new RegExp(`\\$\\{${key}}`), variables[key]);
-            this.end(data);
-        })
+        var htmlPath = path.join(__dirname, '../html', name + '.pug');
+        var html = pug.renderFile(htmlPath, variables, {
+            cache: util.isTesting()
+        });
+        this.setHeader('Content-Type', 'text/html');
+        this.end(html);
     }
 
 }
