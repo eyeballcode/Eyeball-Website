@@ -20,6 +20,10 @@ function getContentType(extension) {
 
 module.exports = function(req, res) {
     var requestPath = req.path;
+    if (requestPath.dir !== '/static') {
+        send404(req, res);
+        return;
+    }
     fs.readFile(path.join(__dirname, '../static', requestPath.name + requestPath.ext), (err, data) => {
         if (err) {
             send404(req, res);
