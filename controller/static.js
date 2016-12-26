@@ -1,4 +1,5 @@
 const mappings = require('../request/mappings');
+const util = require('../util/utils');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,6 +14,8 @@ function getContentType(extension) {
         return 'text/css';
     } else if (extension === 'png') {
         return 'image/png';
+    } else if (extension === '') {
+        return 'application/x-font-ttf';
     } else {
         return 'text/plain';
     }
@@ -29,9 +32,10 @@ module.exports = function(req, res) {
             send404(req, res);
         } else {
             res.writeHead(200, {
-                'Content-Type': getContentType(requestPath.ext.substr(1)),
-                'Cache-Control': 'public, max-age=31536000'
+                'Content-Type': getContentType(requestPath.ext.substr(1))
             });
+            if (util.isProduction())
+                res.setHeader('Cache-Control', 'public, max-age=31536000')
             res.end(data);
         }
     });
