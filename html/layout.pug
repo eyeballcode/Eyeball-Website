@@ -1,5 +1,10 @@
 html
     head
-        title Home
+        title #{pageTitle || 'Eyeball\'s Website'}
+        meta(name="description" content="Eyeball's Website")
+        meta(name="author" content="Eyeball")
     body
+        h1 #{title || ''}
         block content
+
+        block scripts
