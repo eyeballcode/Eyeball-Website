@@ -16,7 +16,7 @@ module.exports = function(serverLocation) {
             try {
                 requireFunction(controller)(req, response);
             } catch (e) {
-                require(path.join(__dirname, '../controller', mappings.errors[500]))(req, response);
+                require(path.join(__dirname, '../controller', mappings.errors[500]))(req, response, e);
             }
         });
     }

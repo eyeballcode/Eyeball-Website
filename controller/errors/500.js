@@ -1,7 +1,8 @@
-module.exports = function(req, res) {
+module.exports = function(req, res, err) {
     res.setCaching(false);
     res.writeHead(500, {
         'Content-Type': 'text/plain'
     });
-    res.end('500');
+    res.send('500: \n');
+    res.end(err.stack);
 }
