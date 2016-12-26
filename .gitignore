@@ -41,3 +41,6 @@ https/
 
 # Config
 config.json
+
+# MongoDB
+mongo/
