@@ -1,5 +1,7 @@
 const Arguments = require('./arguments');
 const path = require('path');
+const fs = require('fs');
+var config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'config.json'));
 
 function parseArgs(args) {
     args = args || process.argv;
@@ -19,7 +21,7 @@ function parseArgs(args) {
 }
 
 function isTesting() {
-    return (process.env.NODE_ENV || '').toUpperCase() !== 'PRODUCTION';
+    return config.mode ? config.mode === 'production' : (process.env.NODE_ENV || '').toUpperCase() !== 'PRODUCTION';
 }
 
 function isProduction() {

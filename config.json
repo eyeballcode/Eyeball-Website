@@ -4,5 +4,5 @@
     },
     "testing": {
         "serverURL": "http://localhost${PORT}"
-    }
+    }, "mode": "production"
 }
