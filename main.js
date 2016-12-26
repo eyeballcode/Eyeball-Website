@@ -1,6 +1,7 @@
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 
 const utils = require('./util/utils');
 const handler = require('./request/handler');
@@ -43,7 +44,11 @@ function setupHTTPOnly() {
 }
 
 function setupHTTPSWithRedirect() {
-    server = https.createServer({}, handler());
+    server = https.createServer({
+        key: fs.readFileSync(path.join(__dirname, 'https/privkey.pem')),
+        cert: fs.readFileSync(path.join(__dirname, 'https/cert.pem')),
+        ca: fs.readFileSync(path.join(__dirname, 'https/chain.pem'))
+    }, handler());
     redirectServer = http.createServer(httpRedirect(serverLocation));
     server.listen(443);
     redirectServer.listen(port);
