@@ -43,13 +43,17 @@ function setupIncoming(req, res, callback) {
     req.url = url.parse(req.url);
     req.path = path.parse(req.url.pathname);
     req.query = querystring.parse(req.url.query || '');
+    req.ip = req.headers['x-forwarded-for'] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress;
 
     if (req.headers['cookie']) {
         req.cookies = parseCookies(req.headers['cookie']);
-    }
+    } else req.cookies = {};
 
     var wrappedRes = new OutgoingResponse(req, res);
-
+    
     processPost(req, wrappedRes, callback);
 }
 

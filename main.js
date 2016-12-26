@@ -2,18 +2,19 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const mongodb = require('mongodb');
 
 const utils = require('./util/utils');
 const handler = require('./request/handler');
 const httpRedirect = require('./request/http-redirect');
 
 const config = JSON.parse(fs.readFileSync('config.json'));
-
 const args = utils.parseArgs();
-
 const port = parseInt((args.hasValue('port') ? args.getValue('port') : (utils.isTesting() ? 8000 : 80)));
-
 const serverLocation = config[utils.isTesting() ? 'testing' : 'production'].serverURL.replace(/\$\{PORT\}/, port === 80 ? '' : `:${port}`);
+const repositoryClass = 'MongoRepository'
+const Repository = require(`./repo/${repositoryClass}`);
+const MONGO_SERVER = 'mongodb://localhost:27017/EyeballWebsite';
 
 global.server = null;
 global.redirectServer = null;
@@ -64,4 +65,14 @@ function setupServers() {
     }
 }
 
-setupServers();
+function connectToMongo(callback) {
+    var client = new mongodb.MongoClient();
+    client.connect(MONGO_SERVER, function (err, db) {
+        if (err) throw err;
+        global.users = new Repository(db, 'users');
+        global.sessions = new Repository(db, 'sessions');
+        callback();
+    });
+}
+
+connectToMongo(setupServers);

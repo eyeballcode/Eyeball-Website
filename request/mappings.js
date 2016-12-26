@@ -4,13 +4,11 @@ function matched(regex, string, path) {
 
 module.exports = {
     routes: {
-        '/': 'index.js',
-        '/users/signup': 'users/signup.js',
-        '/users/login': 'users/login.js'
+        '/': 'IndexController.js',
     }, errors: {
-        404: 'errors/404.js',
-        500: 'errors/500.js'
+        404: 'errors/Error404Controller.js',
+        500: 'errors/Error500Controller.js'
     }, regex: [
-        path => matched(/\/static\/.*/, path, 'static.js')
+        path => matched(/\/static\/.*/, path, 'StaticController.js')
     ]
 }

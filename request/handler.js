@@ -14,9 +14,11 @@ module.exports = function(serverLocation) {
                 requireFunction = util.requireUncached;
             }
             try {
-                requireFunction(controller)(req, response);
+                var Controller = requireFunction(controller);
+                new Controller().run(req, response);
             } catch (e) {
-                require(path.join(__dirname, '../controller', mappings.errors[500]))(req, response, e);
+                var Controller = require(path.join(__dirname, '../controller', mappings.errors[500]));
+                new Controller().run(req, response, e);
             }
         });
     }
