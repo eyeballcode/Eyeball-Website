@@ -1,3 +1,5 @@
 module.exports = function(req, res) {
-    res.end('lol');
+    res.sendHTML('layout', {
+        title: 'Home'
+    });
 }

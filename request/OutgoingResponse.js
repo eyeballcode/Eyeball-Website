@@ -1,4 +1,6 @@
 const etag = require('etag');
+const path = require('path');
+const fs = require('fs');
 
 class OutgoingResponse {
     constructor(req, res) {
@@ -60,6 +62,18 @@ class OutgoingResponse {
 
     setCaching(caching) {
         this.useCaching = caching;
+    }
+
+    sendHTML(name, variables) {
+        var htmlPath = path.join(__dirname, '../html', name + '.html');
+        fs.readFile(htmlPath, (err, data) => {
+            if (err) throw new Error('Cannot find ' + name);
+            this.setHeader('Content-Type', 'text/html');
+            data = data.toString();
+            for (let key of Object.keys(variables || {}))
+                data = data.replace(new RegExp(`\\$\\{${key}}`), variables[key]);
+            this.end(data);
+        })
     }
 
 }
