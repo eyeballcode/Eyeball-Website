@@ -75,6 +75,11 @@ class OutgoingResponse {
         this.end(html);
     }
 
+    sendJSON(json) {
+        this.setHeader('Content-Type', 'application/json');
+        this.end(JSON.stringify(json));
+    }
+
 }
 
 module.exports = OutgoingResponse;
