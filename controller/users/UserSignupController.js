@@ -8,7 +8,7 @@ class IndexController extends BaseController {
 
     run(req, res) {
         switch (req.method) {
-            'GET':
+            case 'GET':
                 new SessionModel(sessions).getSession(req.cookies.sessionID, (err, session) => {
                     if (session) {
                         res.writeHead(302, {
@@ -20,7 +20,7 @@ class IndexController extends BaseController {
                     }
                 });
                 break;
-            'POST':
+            case 'POST':
                 break;
             default:
                 res.sendJSON({
