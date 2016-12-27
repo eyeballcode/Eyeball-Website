@@ -1,8 +1,3 @@
-const mappings = require('../request/mappings');
-const util = require('../util/utils');
-const path = require('path');
-const fs = require('fs');
-
 const BaseController = require('./BaseController');
 const StaticDataModel = require('../models/StaticDataModel');
 const StaticView = require('../views/StaticView');
