@@ -10,6 +10,10 @@ class SessionsModel extends BaseModel {
 
     getSession(sessionID, callback) {
         this.database.lookupOne({sessionID}, (err, session) => {
+            if (!session) {
+                callback(null, null);
+                return;
+            }
             this.users.lookupOne({
                 username: session.username,
                 email: session.email
