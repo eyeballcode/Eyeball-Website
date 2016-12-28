@@ -17,7 +17,7 @@ class OutgoingResponse {
     }
 
     setCookie(key, val, httpOnly, expiry) {
-        this.cookies.push(`${key}=${val};path=/;${httpOnly ? ' httponly;' : ''}${expiry ? 'expiry=${expiry}' : ''}`);
+        this.cookies.push(`${key}=${val};path=/;${httpOnly ? ' httponly;' : ''}${expiry ? `expiry=${expiry}` : ''}`);
     }
 
     setHeader(key, val) {
@@ -52,7 +52,7 @@ class OutgoingResponse {
         if (this.cookies.length > 0) {
             this.headers['Set-Cookie'] = this.cookies;
         }
-        if (this.useCaching && (this.statusCode >= 200 && this.statusCode < 300)) {
+        if (this.useCaching && (this.statusCode >= 200 && this.statusCode < 300) && req.method === 'GET') {
             var bodyETag = etag(body.toString());
             if (req.headers['if-none-match'] && req.headers['if-none-match'] === bodyETag) {
                 res.writeHead(304, this.headers);

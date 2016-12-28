@@ -1,7 +1,7 @@
 const BaseController = require('../BaseController');
 const SessionModel = require('../../models/SessionModel');
 const UserModel = require('../../models/UserModel');
-const UserSignupView = require('../../views/users/UserSignupView');
+const UserLoginView = require('../../views/users/UserLoginView');
 
 class IndexController extends BaseController {
     get name() {
@@ -9,7 +9,7 @@ class IndexController extends BaseController {
     }
 
     run(req, res) {
-        var view = new UserSignupView(users);
+        var view = new UserLoginView(users);
         switch (req.method) {
             case 'GET':
                 new SessionModel(users, sessions).getSession(req.cookies.sessionID, (err, session) => {
@@ -27,13 +27,13 @@ class IndexController extends BaseController {
                     this.invalidMedia(res);
                     return;
                 }
-                userModel.canUserSignup(req.body, (canSignup, reason) => {
-                    if (canSignup) {
-                        userModel.signup(req.body, sessionID => {
-                            this.signupOk(res, sessionID);
+                userModel.canUserLogin(req.body, (canLogin, reason) => {
+                    if (canLogin) {
+                        userModel.login(req.body, sessionID => {
+                            this.loginOk(res, sessionID);
                         });
                     } else {
-                        this.signupError(res, reason);
+                        this.loginError(res, reason);
                     }
                 });
                 break;
@@ -61,15 +61,15 @@ class IndexController extends BaseController {
         });
     }
 
-    signupError(res, reason) {
+    loginError(res, reason) {
         res.writeHead(400);
         res.sendJSON({
-            'ErrorMessage': 'SignupError',
+            'ErrorMessage': 'LoginError',
             'Reason': reason
         });
     }
 
-    signupOk(res, sessionID) {
+    loginOk(res, sessionID) {
         res.writeHead(200);
         res.setCookie('session', sessionID, true, +new Date() + 31536000);
         res.end();

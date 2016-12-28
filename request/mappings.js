@@ -6,7 +6,8 @@ module.exports = {
     routes: {
         '/': 'IndexController.js',
         '/users/signup': 'users/UserSignupController.js',
-        '/users/postsignup': 'users/PostActionController.js',
+        '/users/login': 'users/UserLoginController.js',
+        '/users/redir-home': 'users/PostActionController.js',
         '/users/logout': 'users/LogoutController.js'
     }, errors: {
         404: 'errors/Error404Controller.js',

@@ -1,4 +1,5 @@
 const BaseModel = require('./BaseModel');
+const SessionModel = require('./SessionModel');
 const crypto = require('crypto');
 
 class UserModel extends BaseModel {
@@ -54,14 +55,48 @@ class UserModel extends BaseModel {
                 salt: salt
             };
             this.database.insert(userData, (err) => {
-                this.sessionDatabase.insert({
-                    sessionID: sessionID,
-                    username: body.username,
-                    email: body.email
-                }, (err) => {
-                    callback(sessionID);
-                });
+                new SessionModel(users, sessions).newSession(body, callback);
             });
+        });
+    }
+
+    canUserLogin(body, callback) {
+        this.database.lookupOne({
+            $or: [
+                {
+                    username: body.username
+                },
+                {
+                    email: body.username
+                }
+            ]
+        }, (err, user) => {
+            if (!user) {
+                callback(false, 'Incorrect username or password');
+                return;
+            }
+            this.saltHash(body.password, user.salt, hash => {
+                if (hash === user.hash) {
+                    callback(true, null);
+                } else {
+                    callback(false, 'Incorrect username or password');
+                }
+            })
+        });
+    }
+
+    login(body, callback) {
+        this.database.lookupOne({
+            $or: [
+                {
+                    username: body.username
+                },
+                {
+                    email: body.username
+                }
+            ]
+        }, (err, user) => {
+            new SessionModel(users, sessions).newSession(user, callback);
         });
     }
 }
