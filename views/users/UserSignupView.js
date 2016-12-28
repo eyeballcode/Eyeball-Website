@@ -37,7 +37,7 @@ class UserSignupView extends BaseView {
         res.writeHead(302, {
             'Location': '/'
         });
-        res.setCookie('session', sessionID);
+        res.setCookie('session', sessionID, true, +new Date() + 31536000);
         res.end();
     }
 }
