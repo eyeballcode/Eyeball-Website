@@ -7,8 +7,7 @@ class IndexController extends BaseController {
     }
 
     run(req, res) {
-        console.log(req.cookies);
-        new SessionModel(users, sessions).getSession(req.cookies.sessionID, (err, session) => {
+        new SessionModel(users, sessions).getSession(req.cookies.session, (err, session) => {
             if (session) {
                 res.setCookie('session', '', true, 0);
                 res.end();
