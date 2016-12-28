@@ -8,6 +8,14 @@ html
         block head
     body
         h1 #{title || ''}
+        if session
+            h3="Welcome, " + session.username
+            a(href="#")#logout Logout
+        else
+            h3 Welcome,&nbsp;
+                a(href="/users/signup") Sign up
+                |  or&nbsp;
+                a(href="/users/login") Login
         block content
 
         script(src="/static/ajax.js")

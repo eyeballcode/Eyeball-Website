@@ -7,7 +7,7 @@ class IndexView extends BaseView {
     }
 
     render(res, session) {
-        res.sendHTML('index', session);
+        res.sendHTML('index', {session});
     }
 }
 

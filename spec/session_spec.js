@@ -14,7 +14,18 @@ describe('The session spec', () => {
                 email: 'a@b.com'
             }
         ]);
-        var model = new SessionModel(sessionRepo);
+
+        var usersRepo = new FakeRepository([
+            {
+                username: 'Eyeball',
+                email: 'eyeball@eyeball.online'
+            }, {
+                username: 'lol',
+                email: 'a@b.com'
+            }
+        ]);
+
+        var model = new SessionModel(usersRepo, sessionRepo);
         model.getSession('hashbrowns', (err, session) => {
             expect(session).not.toBe(null);
             expect(session.username).toBe('Eyeball');

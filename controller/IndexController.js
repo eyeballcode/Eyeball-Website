@@ -1,14 +1,18 @@
-const BaseController = require('./BaseController');
-const SessionModel = require('../models/SessionModel');
+const SessionController = require('./SessionController');
 const IndexView = require('../views/IndexView');
 
-class IndexController extends BaseController {
+class IndexController extends SessionController {
+
+    constructor() {
+        super();
+    }
+
     get name() {
         return 'Index Controller';
     }
 
     run(req, res) {
-        new SessionModel(sessions).getSession(req.cookies.sessionID, (err, session) => {
+        super.getSession(req, session => {
             new IndexView().render(res, session);
         });
     }

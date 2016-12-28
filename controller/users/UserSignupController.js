@@ -14,7 +14,7 @@ class IndexController extends BaseController {
             case 'GET':
                 new SessionModel(sessions).getSession(req.cookies.sessionID, (err, session) => {
                     if (session) {
-                        view.alreadySignedIn(res);
+                        this.alreadySignedIn(res);
                     } else {
                         view.render(res);
                     }
@@ -24,16 +24,16 @@ class IndexController extends BaseController {
                 var userModel = new UserModel(users, sessions);
                 if (typeof req.body === 'string') {
                     //Failed to parse JSON
-                    view.invalidMedia(res);
+                    this.invalidMedia(res);
                     return;
                 }
                 userModel.canUserSignup(req.body, (canSignup, reason) => {
                     if (canSignup) {
                         userModel.signup(req.body, sessionID => {
-                            view.signupOk(res, sessionID);
+                            this.signupOk(res, sessionID);
                         });
                     } else {
-                        view.signupError(res, reason);
+                        this.signupError(res, reason);
                     }
                 });
                 break;
@@ -45,6 +45,38 @@ class IndexController extends BaseController {
                 break;
         }
     }
+
+    alreadySignedIn(res) {
+        res.writeHead(302, {
+            'Location': '/'
+        });
+        res.end();
+    }
+
+    invalidMedia(res) {
+        res.writeHead(415);
+        res.sendJSON({
+            'ErrorMessage': 'UnsupportedMediaType',
+            'Reason': 'Use JSON instead.'
+        });
+    }
+
+    signupError(res, reason) {
+        res.writeHead(400);
+        res.sendJSON({
+            'ErrorMessage': 'SignupError',
+            'Reason': reason
+        });
+    }
+
+    signupOk(res, sessionID) {
+        res.writeHead(302, {
+            'Location': '/'
+        });
+        res.setCookie('session', sessionID, true, +new Date() + 31536000);
+        res.end();
+    }
+
 }
 
 module.exports = IndexController;
