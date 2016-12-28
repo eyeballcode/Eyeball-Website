@@ -7,6 +7,7 @@ class Error500Controller extends BaseController {
     }
 
     run(req, res, error) {
+        res.setCaching(false);
         new ErrorView().render(res, 500, error);
     }
 }

@@ -7,6 +7,7 @@ class ErrorView extends BaseView {
     }
 
     render(res, errorCode, error) {
+        res.writeHead(errorCode);
         res.send(`${errorCode}:\n${error ? error.stack : ''}`);
         res.end();
     }
