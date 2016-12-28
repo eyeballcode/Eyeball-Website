@@ -39,17 +39,3 @@ describe('Argument parsing', () => {
         expect(argsParsed.hasValue('port')).toEqual(true);
     });
 });
-
-describe('Checking environment', () => {
-    it('can detect testing environments', () => {
-        delete process.env.NODE_ENV;
-        expect(utils.isTesting()).toEqual(true);
-    });
-
-    it('can detect production environments', () => {
-        process.env.NODE_ENV = 'PRODUCTION';
-        expect(utils.isProduction()).toEqual(true);
-    });
-
-
-});
