@@ -21,7 +21,7 @@ function processPost(request, response, callback) {
 
     if(request.method === 'POST') {
         request.on('data', (data) => {
-            queryData += data;
+            queryData += data.toString();
             if(queryData.length > 1e6) {
                 queryData = "";
                 response.writeHead(413, {'Content-Type': 'text/plain'}).end();
@@ -31,7 +31,7 @@ function processPost(request, response, callback) {
 
         request.on('end', () => {
             var parsed = parse(queryData, JSON.parse, querystring.parse, String);
-            response.body = parsed;
+            request.body = parsed;
             callback(request, response);
         });
     } else {
@@ -53,7 +53,7 @@ function setupIncoming(req, res, callback) {
     } else req.cookies = {};
 
     var wrappedRes = new OutgoingResponse(req, res);
-    
+
     processPost(req, wrappedRes, callback);
 }
 

@@ -5,7 +5,8 @@ function matched(regex, string, path) {
 module.exports = {
     routes: {
         '/': 'IndexController.js',
-        '/users/signup': 'users/UserSignupController.js'
+        '/users/signup': 'users/UserSignupController.js',
+        '/users/postsignup': 'users/PostActionController.js'
     }, errors: {
         404: 'errors/Error404Controller.js',
         500: 'errors/Error500Controller.js'

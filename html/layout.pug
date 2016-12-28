@@ -5,8 +5,10 @@ html
         meta(name="author" content="Eyeball")
         meta(charset="utf-8")
         link(rel="stylesheet" href="/static/style.css")
+        block head
     body
         h1 #{title || ''}
         block content
 
+        script(src="/static/ajax.js")
         block scripts

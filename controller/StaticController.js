@@ -10,18 +10,14 @@ class StaticController extends BaseController {
 
     run(req, res) {
         var model = new StaticDataModel();
-        if (model.isValidPath(req)) {
-            model.getFileData(req, data => {
-                if (data) {
-                    var format = StaticDataModel.getContentType(req.path.ext.substr(1));
-                    new StaticView().render(res, data, format);
-                } else {
-                    new Error404Controller().run(req, res);
-                }
-            });
-        } else {
-            new Error404Controller().run(req, res);
-        }
+        model.getFileData(req, data => {
+            if (data) {
+                var format = StaticDataModel.getContentType(req.path.ext.substr(1));
+                new StaticView().render(res, data, format);
+            } else {
+                new Error404Controller().run(req, res);
+            }
+        });
     }
 }
 

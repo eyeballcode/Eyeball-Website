@@ -13,6 +13,11 @@ class OutgoingResponse {
         this.buffer = Buffer.alloc(0);
         this.hasEnded = false;
         this.useCaching = true;
+        this.cookies = [];
+    }
+
+    setCookie(key, val, httpOnly, expiry) {
+        this.cookies.push(`${key}=${val};path=/;${httpOnly ? ' httponly;' : ''}`);
     }
 
     setHeader(key, val) {
@@ -34,7 +39,7 @@ class OutgoingResponse {
 
     writeHead(code, headers) {
         this.statusCode = code;
-        this.headers = headers;
+        this.headers = headers || {};
     }
 
     end(data) {
@@ -44,6 +49,9 @@ class OutgoingResponse {
         this.hasEnded = true;
         var {req, res} = this;
         var body = this.buffer;
+        if (this.cookies.length > 0) {
+            this.headers['Set-Cookie'] = this.cookies;
+        }
         if (this.useCaching && (this.statusCode >= 200 && this.statusCode <= 400)) {
             var bodyETag = etag(body.toString());
             if (req.headers['if-none-match'] && req.headers['if-none-match'] === bodyETag) {

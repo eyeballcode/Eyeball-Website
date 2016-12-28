@@ -9,12 +9,8 @@ class StaticDataModel extends BaseModel {
         this.database = database;
     }
 
-    isValidPath(req) {
-        return req.path.dir === '/static';
-    }
-
     getFileData(req, cb) {
-        fs.readFile(path.join(__dirname, '../static', req.path.name + req.path.ext), (err, data) => {
+        fs.readFile(path.join(__dirname, '..', req.path.dir, req.path.name + req.path.ext), (err, data) => {
             cb(data);
         });
     }
